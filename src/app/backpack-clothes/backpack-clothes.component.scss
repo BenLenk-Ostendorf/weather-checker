@@ -1,7 +1,7 @@
 .card {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin: 1rem 0;
 }
@@ -9,23 +9,25 @@
 .card-header {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   
   .icon {
-    font-size: 1.5rem;
-    margin-right: 0.5rem;
+    font-size: 2rem;
+    margin-right: 0.75rem;
   }
 
   h2 {
     margin: 0;
-    color: #444;
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
 }
 
 .clothes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
   margin-top: 1rem;
 }
 
@@ -34,27 +36,33 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: #f8f9fa;
-  border-radius: 8px;
-  transition: transform 0.2s;
+  border-radius: 12px;
+  transition: all 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-}
 
-.icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
+  .icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+  }
 
-.label {
-  font-size: 0.9rem;
-  color: #495057;
+  .label {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    font-weight: 500;
+  }
 }
 
 .no-clothes {
   grid-column: 1 / -1;
   color: #6c757d;
+  
+  .icon {
+    opacity: 0.7;
+  }
 }

@@ -60,23 +60,7 @@ export class WeatherApiService {
     // Find the current hour in the hourly data
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
-    
-    // Log next 8 hours of temperature data
-    console.log("\nWeather forecast:");
-    // Log current temperature first
-    console.log(`Current time: ${currentTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })} | Temperature: ${Math.round(weatherData.current.temperature2m)}°C | Rain: ${weatherData.hourly.precipitationProbability[currentHour]}%`);
-    
-    let hoursLogged = 0;
-    for (let i = 0; i < weatherData.hourly.time.length && hoursLogged < 7; i++) {
-      const forecastTime = weatherData.hourly.time[i];
-      if (forecastTime.getHours() > currentHour) {
-        console.log(
-          `${forecastTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}: ${Math.round(weatherData.hourly.temperature2m[i])}°C | Rain: ${weatherData.hourly.precipitationProbability[i]}%`
-        );
-        hoursLogged++;
-      }
-    }
-    
+        
     return weatherData;
   }
 }

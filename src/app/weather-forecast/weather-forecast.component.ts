@@ -11,6 +11,27 @@ import { CommonModule } from '@angular/common';
 export class WeatherForecastComponent {
   @Input() weatherData: any;
 
+  isCold(): boolean {
+    if (!this.weatherData?.current?.temperature2m) return false;
+    return this.weatherData.current.temperature2m < 18;
+  }
+
+  isRainy(): boolean {
+    if (!this.weatherData?.hourly?.precipitationProbability) return false;
+    const currentHour = this.getCurrentHourIndex();
+    return this.weatherData.hourly.precipitationProbability[currentHour] > 30;
+  }
+
+  getRainLevel(): string {
+    if (!this.weatherData?.hourly?.precipitationProbability) return 'low';
+    const currentHour = this.getCurrentHourIndex();
+    const probability = this.weatherData.hourly.precipitationProbability[currentHour];
+    
+    if (probability <= 30) return 'low';
+    if (probability <= 60) return 'medium';
+    return 'high';
+  }
+
   getCurrentHourIndex(): number {
     if (!this.weatherData?.hourly?.time) return 0;
     

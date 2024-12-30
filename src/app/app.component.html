@@ -1,6 +1,18 @@
-<h1>What should I wear?</h1>
-<button (click)="getClothes()">Refresh</button>
+<div class="header">
+</div>
 
-<app-current-clothes [clothesData]="clothesData"></app-current-clothes>
-<app-backpack-clothes [clothesData]="clothesData"></app-backpack-clothes>
-<app-weather-forecast [weatherData]="weatherData"></app-weather-forecast>
+<div class="app-container" [class.cold]="isCold()" [class.warm]="isWarm()" [class.rainy]="isRainy()">
+  <div class="content">
+    <app-current-clothes [clothesData]="clothesData"></app-current-clothes>
+    <app-backpack-clothes [clothesData]="clothesData"></app-backpack-clothes>
+  </div>
+
+  <app-weather-forecast [weatherData]="weatherData"></app-weather-forecast>
+
+  <div class="refresh-container">
+    <button (click)="getClothes()">
+      <span>🔄</span>
+      Refresh
+    </button>
+  </div>
+</div>

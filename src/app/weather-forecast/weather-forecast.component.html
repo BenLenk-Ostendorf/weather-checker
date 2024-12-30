@@ -1,19 +1,48 @@
 <div class="card">
   <h2>Weather Forecast</h2>
   <div *ngIf="weatherData">
-    <div class="current-weather">
-      <h3>Current Weather</h3>
-      <p>Temperature: {{weatherData.current.temperature2m | number:'1.0-0'}}°C</p>
-      <p>Rain Probability: {{weatherData.hourly.precipitationProbability[0]}}%</p>
+    <div class="current-conditions">
+      <div class="weather-card temperature" [class.cold]="isCold()" *ngIf="weatherData">
+        <div class="icon">
+          {{ isCold() ? '❄️' : '☀️' }}
+        </div>
+        <div class="value">
+          {{weatherData.current.temperature2m | number:'1.0-0'}}°
+        </div>
+        <div class="label">Temperature</div>
+      </div>
+
+      <div class="weather-card rain" 
+           [class.rain-low]="getRainLevel() === 'low'"
+           [class.rain-medium]="getRainLevel() === 'medium'"
+           [class.rain-high]="getRainLevel() === 'high'"
+           *ngIf="weatherData">
+        <div class="icon">
+          {{ isRainy() ? '🌧️' : '☁️' }}
+        </div>
+        <div class="value" [class]="getRainLevel()">
+          {{weatherData.hourly.precipitationProbability[getCurrentHourIndex()]}}%
+        </div>
+        <div class="label">Rain Chance</div>
+      </div>
     </div>
 
-    <div class="forecast">
+    <div class="card forecast-card">
       <h3>Next 8 Hours</h3>
       <div class="forecast-grid">
         <div *ngFor="let forecast of getNextHoursForecast()" class="forecast-item">
-          <p>{{forecast.time | date:'HH:mm'}}</p>
-          <p>{{forecast.temperature | number:'1.0-0'}}°C</p>
-          <p>Rain: {{forecast.rainProbability}}%</p>
+          <div class="time">{{forecast.time | date:'HH:mm'}}</div>
+          <div class="forecast-data">
+            <div class="temp" [class.cold]="forecast.temperature < 18">
+              {{forecast.temperature | number:'1.0-0'}}°
+            </div>
+            <div class="rain" 
+                 [class.rain-low]="forecast.rainProbability <= 30"
+                 [class.rain-medium]="forecast.rainProbability > 30 && forecast.rainProbability <= 60"
+                 [class.rain-high]="forecast.rainProbability > 60">
+              {{forecast.rainProbability}}%
+            </div>
+          </div>
         </div>
       </div>
     </div>
