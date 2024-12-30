@@ -1,0 +1,31 @@
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  color: #444;
+  margin: 0 0 1rem 0;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  
+  &:hover {
+    background-color: #0056b3;
+  }
+}

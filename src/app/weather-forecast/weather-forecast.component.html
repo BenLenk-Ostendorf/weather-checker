@@ -1,0 +1,21 @@
+<div class="card">
+  <h2>Weather Forecast</h2>
+  <div *ngIf="weatherData">
+    <div class="current-weather">
+      <h3>Current Weather</h3>
+      <p>Temperature: {{weatherData.current.temperature2m | number:'1.0-0'}}°C</p>
+      <p>Rain Probability: {{weatherData.hourly.precipitationProbability[0]}}%</p>
+    </div>
+
+    <div class="forecast">
+      <h3>Next 8 Hours</h3>
+      <div class="forecast-grid">
+        <div *ngFor="let forecast of getNextHoursForecast()" class="forecast-item">
+          <p>{{forecast.time | date:'HH:mm'}}</p>
+          <p>{{forecast.temperature | number:'1.0-0'}}°C</p>
+          <p>Rain: {{forecast.rainProbability}}%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

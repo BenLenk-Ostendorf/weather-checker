@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="card-header">
+    <div class="icon">🎒</div>
+    <h2>Pack in your backpack</h2>
+  </div>
+  <div *ngIf="clothesData" class="clothes-grid">
+    <div *ngFor="let item of getBackpackClothes()" class="clothes-item">
+      <div class="icon">{{item.icon}}</div>
+      <div class="label">{{item.label}}</div>
+    </div>
+    <div *ngIf="getBackpackClothes().length === 0" class="no-clothes">
+      <div class="icon">✅</div>
+      <div class="label">Nothing extra needed</div>
+    </div>
+  </div>
+</div>

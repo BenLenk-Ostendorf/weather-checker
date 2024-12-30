@@ -18,57 +18,75 @@ export class ClothesSelectorService {
       "bike": false
     };
 
-    const clothesSettings: { [key: string]: { minTemp: number, maxTemp: number, rain?: number } } = {
+    const backpackDict: { [key: string]: boolean } = {
+      "pullover": false,
+      "leatherjacket": false,
+      "rainjacket": false,
+      "rainPants": false
+    };
+
+    const clothesSettings: { [key: string]: { cold: boolean, rain: boolean } } = {
       "pullover": {
-        minTemp: -10,
-        maxTemp: 18
+        cold: true,
+        rain: false
       },
       "leatherjacket": {
-        minTemp: -10,
-        maxTemp: 12
+        cold: true,
+        rain: true
       },
       "rainjacket": {
-        minTemp: 12,
-        maxTemp: 30,
-        rain: 30
+        cold: false,
+        rain: true
       },
       "rainPants": {
-        minTemp: -10,
-        maxTemp: 18,
-        rain: 30
-      },
-      "bike": {
-        minTemp: 1,
-        maxTemp: 100
+        cold: true,
+        rain: true
       }
     };
 
-    // Current hour for precipitation probability
-    const currentTime = new Date();
-    const currentHour = currentTime.getHours();
-    
-    // Create weather data object
-    const currentWeather = {
-      time: currentTime.toISOString(),
-      temperature: Math.round(weatherData.current.temperature2m),
-      rainProbability: weatherData.hourly.precipitationProbability[currentHour]
-    };
+    // Get current conditions
+    const currentHour = new Date().getHours();
+    const currentTemp = weatherData.current.temperature2m;
+    const currentRain = weatherData.hourly.precipitationProbability[currentHour];
 
-    // First check temperature ranges
+    // Check current conditions for what to wear now
+    const isCold = currentTemp < 18;
+    const isRaining = currentRain > 30;
+
     for (const [item, settings] of Object.entries(clothesSettings)) {
-      clothesDict[item] = currentWeather.temperature >= settings.minTemp && 
-                         currentWeather.temperature <= settings.maxTemp;
+      if (isCold) {
+        clothesDict[item] = settings.cold;
+      } else {
+        clothesDict[item] = !settings.cold && settings.rain && isRaining;
+      }
     }
 
-    // Then check rain probability and override if necessary
+    // Check future conditions for backpack
+    const nextHours = weatherData.hourly.time
+      .slice(currentHour, currentHour + 8)
+      .map((_, index) => ({
+        temperature: weatherData.hourly.temperature2m[currentHour + index],
+        rainProbability: weatherData.hourly.precipitationProbability[currentHour + index]
+      }));
+
+    const willBeCold = nextHours.some(hour => hour.temperature < 18);
+    const willRain = nextHours.some(hour => hour.rainProbability > 30);
+
+    // Add items to backpack if conditions will change
     for (const [item, settings] of Object.entries(clothesSettings)) {
-      if (settings.rain && currentWeather.rainProbability >= settings.rain) {
-        clothesDict[item] = true;
+      if (!clothesDict[item]) { // Only add to backpack if not already wearing
+        if (settings.cold && willBeCold) {
+          backpackDict[item] = true;
+        }
+        if (settings.rain && willRain) {
+          backpackDict[item] = true;
+        }
       }
     }
 
     return {
-      clothes: clothesDict
+      clothes: clothesDict,
+      backpack: backpackDict
     };
   }
 }

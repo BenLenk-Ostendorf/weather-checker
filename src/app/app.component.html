@@ -1,11 +1,6 @@
 <h1>What should I wear?</h1>
 <button (click)="getClothes()">Refresh</button>
 
-<h2>Current weather</h2>
-<div *ngIf="clothesData">
-  <p *ngIf="clothesData.clothes.pullover">Pullover</p>
-  <p *ngIf="clothesData.clothes.leatherjacket">Leather jacket</p>
-  <p *ngIf="clothesData.clothes.rainjacket">Rain jacket</p>
-  <p *ngIf="clothesData.clothes.rainPants">Rain pants</p>
-  <p *ngIf="clothesData.clothes.bike">Bike</p>
-</div>
+<app-current-clothes [clothesData]="clothesData"></app-current-clothes>
+<app-backpack-clothes [clothesData]="clothesData"></app-backpack-clothes>
+<app-weather-forecast [weatherData]="weatherData"></app-weather-forecast>

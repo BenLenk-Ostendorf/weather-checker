@@ -9,15 +9,23 @@ export class WeatherApiService {
   constructor() { }
 
   async getWeather() {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const formatDate = (date: Date) => {
+      return date.toISOString().split('T')[0];
+    };
+
     const params = {
       "latitude": 48.1374,
       "longitude": 11.5755,
       "current": "temperature_2m",
-      "hourly": ["temperature_2m", "rain"],
+      "hourly": ["temperature_2m", "precipitation_probability"],
       "daily": "weather_code",
       "timezone": "Europe/Berlin",
-      "start_date": "2024-12-29",
-      "end_date": "2024-12-29"
+      "start_date": formatDate(today),
+      "end_date": formatDate(tomorrow)
     };
     const url = "https://api.open-meteo.com/v1/forecast";
     const responses = await fetchWeatherApi(url, params);
@@ -50,13 +58,13 @@ export class WeatherApiService {
     };
         
     // Find the current hour in the hourly data
-    const currentTime = new Date('2024-12-29T17:42:28+01:00');
+    const currentTime = new Date();
     const currentHour = currentTime.getHours();
     
     // Log next 8 hours of temperature data
     console.log("\nWeather forecast:");
     // Log current temperature first
-    console.log(`17:42: ${Math.round(weatherData.current.temperature2m)}°C | Rain: ${weatherData.hourly.precipitationProbability[currentHour]}%`);
+    console.log(`Current time: ${currentTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })} | Temperature: ${Math.round(weatherData.current.temperature2m)}°C | Rain: ${weatherData.hourly.precipitationProbability[currentHour]}%`);
     
     let hoursLogged = 0;
     for (let i = 0; i < weatherData.hourly.time.length && hoursLogged < 7; i++) {
